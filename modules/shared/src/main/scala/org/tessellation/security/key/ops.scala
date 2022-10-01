@@ -43,7 +43,7 @@ object ops {
       val ints = validInt.map(_.toString.toInt)
       val sum = ints.sum
       val par = sum % 9
-      val res2: DAGAddress = refineV[DAGAddressRefined].unsafeFrom(s"DAG$par$end")
+      val res2: DAGAddress = refineV[DAGAddressRefined].unsafeFrom(s"WERX$par$end")
       Address(res2)
     }
 

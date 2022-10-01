@@ -65,7 +65,7 @@ object address {
             val par = a.substring(4).filter(Character.isDigit).map(_.toString.toInt).sum % 9
 
             val isBase58 = Base58.isBase58(a.substring(4))
-            val hasDAGPrefixAndParity = a.startsWith(s"DAG$par")
+            val hasDAGPrefixAndParity = a.startsWith(s"WERX$par")
 
             isBase58 && hasDAGPrefixAndParity
         },

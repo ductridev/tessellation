@@ -25,5 +25,5 @@ sbt "generateInput --help"
 
 Uploading a `/tmp/0.bin` input file to a node running on `localhost`
 ```
-curl -X POST http://localhost:9000/state-channel/DAG3k3VihUWMjse9LE93jRqZLEuwGd6a5Ypk4zYS/input --data-binary "@/tmp/0.bin"
+curl -X POST http://localhost:9000/state-channel/WERX3k3VihUWMjse9LE93jRqZLEuwGd6a5Ypk4zYS/input --data-binary "@/tmp/0.bin"
 ```

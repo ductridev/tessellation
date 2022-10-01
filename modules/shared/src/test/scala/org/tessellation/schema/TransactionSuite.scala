@@ -30,8 +30,8 @@ object TransactionSuite extends ResourceSuite with Checkers {
 
   test("Transaction's representation used for hashing should follow expected format") {
     val transaction = Transaction(
-      Address("DAG2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQabcd"),
-      Address("DAG2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQefgh"),
+      Address("WERX2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQabcd"),
+      Address("WERX2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQefgh"),
       TransactionAmount(10L),
       TransactionFee(3L),
       TransactionReference(TransactionOrdinal(2L), Hash("someHash")),
@@ -41,9 +41,9 @@ object TransactionSuite extends ResourceSuite with Checkers {
     val expectedToEncode =
       "2" +
         "40" +
-        "DAG2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQabcd" +
+        "WERX2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQabcd" +
         "40" +
-        "DAG2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQefgh" +
+        "WERX2EUdecqFwEGcgAcH1ac2wrsg8acrgGwrQefgh" +
         "1" +
         "a" +
         "8" +
@@ -62,8 +62,8 @@ object TransactionSuite extends ResourceSuite with Checkers {
     val expectedHash = "1017a072225263aa502d9dcd22a04455f9b063cc19166356be50b4730afc44f6"
 
     val transaction = Transaction(
-      Address("DAG53ho9ssY8KYQdjxsWPYgNbDJ1YqM2RaPDZebU"),
-      Address("DAG53ho9ssY8KYQdjxsWPYgNbDJ1YqM2RaPDZebU"),
+      Address("WERX53ho9ssY8KYQdjxsWPYgNbDJ1YqM2RaPDZebU"),
+      Address("WERX53ho9ssY8KYQdjxsWPYgNbDJ1YqM2RaPDZebU"),
       TransactionAmount(100000000L),
       TransactionFee(0L),
       TransactionReference(

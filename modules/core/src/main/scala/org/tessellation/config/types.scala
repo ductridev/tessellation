@@ -55,8 +55,8 @@ object types {
   )
 
   case class SoftStakingAndTestnetConfig(
-    softStakeAddress: Address = Address("DAG77VVVRvdZiYxZ2hCtkHz68h85ApT5b2xzdTkn"),
-    testnetAddress: Address = Address("DAG0qE5tkz6cMUD5M2dkqgfV4TQCzUUdAP5MFM9P"),
+    softStakeAddress: Address = Address("WERX77VVVRvdZiYxZ2hCtkHz68h85ApT5b2xzdTkn"),
+    testnetAddress: Address = Address("WERX0qE5tkz6cMUD5M2dkqgfV4TQCzUUdAP5MFM9P"),
     startingOrdinal: EpochProgress = EpochProgress(0L),
     testnetCount: NonNegLong = 217L,
     testnetWeight: NonNegLong = 4L,
@@ -66,14 +66,14 @@ object types {
   )
 
   case class DTMConfig(
-    address: Address = Address("DAG0Njmo6JZ3FhkLsipJSppepUHPuTXcSifARfvK"),
+    address: Address = Address("WERX0Njmo6JZ3FhkLsipJSppepUHPuTXcSifARfvK"),
     dtmWeight: NonNegLong = 137L,
     remainingWeight: NonNegLong = 863L
   )
 
   case class StardustConfig(
-    addressPrimary: Address = Address("DAGSTARDUSTCOLLECTIVEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"),
-    addressSecondary: Address = Address("DAG8VT7bxjs1XXBAzJGYJDaeyNxuThikHeUTp9XY"),
+    addressPrimary: Address = Address("WERXSTARDUSTCOLLECTIVEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"),
+    addressSecondary: Address = Address("WERX8VT7bxjs1XXBAzJGYJDaeyNxuThikHeUTp9XY"),
     primaryWeight: NonNegLong = 1L,
     secondaryWeight: NonNegLong = 1L,
     remainingWeight: NonNegLong = 18L

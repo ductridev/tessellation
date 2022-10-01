@@ -34,7 +34,7 @@ object BlockAcceptanceManagerSuite extends MutableIOSuite with Checkers {
   val validAwaitingParent = BlockReference(Height(0L), ProofsHash(Hash.empty.value.init + "3"))
   val validInitiallyAwaitingParent = BlockReference(Height(0L), ProofsHash(Hash.empty.value.init + "4"))
   val invalidParent = BlockReference(Height(0L), ProofsHash(Hash.empty.value.init + "5"))
-  val commonAddress = Address("DAG0y4eLqhhXUafeE3mgBstezPTnr8L3tZjAtMWB")
+  val commonAddress = Address("WERX0y4eLqhhXUafeE3mgBstezPTnr8L3tZjAtMWB")
   type Res = KryoSerializer[IO]
 
   override def sharedResource: Resource[IO, BlockAcceptanceManagerSuite.Res] =

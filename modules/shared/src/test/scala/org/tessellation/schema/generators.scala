@@ -84,7 +84,7 @@ object generators {
     for {
       end <- Gen.stringOfN(36, base58CharGen)
       par = end.filter(_.isDigit).map(_.toString.toInt).sum % 9
-    } yield Address(refineV[DAGAddressRefined].unsafeFrom(s"DAG$par$end"))
+    } yield Address(refineV[DAGAddressRefined].unsafeFrom(s"WERX$par$end"))
 
   val balanceGen: Gen[Balance] =
     Arbitrary.arbitrary[NonNegLong].map(Balance(_))

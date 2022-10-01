@@ -14,7 +14,7 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 object SimpleSnapshotPublisherDef extends StateChannelDef[EmitSimpleSnapshot, Ω, EmitSimpleSnapshot] {
 
-  val address: Address = Address("DAG3k3VihUWMjse9LE93jRqZLEuwGd6a5Ypk4zYS")
+  val address: Address = Address("WERX3k3VihUWMjse9LE93jRqZLEuwGd6a5Ypk4zYS")
 
   val kryoRegistrar = Map(
     classOf[EmitSimpleSnapshot] -> 1000,

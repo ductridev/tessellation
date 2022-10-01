@@ -21,7 +21,7 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 object L0TokenDef extends StateChannelDef[L0TokenStep, Ω, L0TokenStep] {
 
-  override val address = Address("DAG3k3VihUWMjse9LE93jRqZLEuwGd6a5Ypk4zYS")
+  override val address = Address("WERX3k3VihUWMjse9LE93jRqZLEuwGd6a5Ypk4zYS")
 
   override val kryoRegistrar: Map[Class[_], StateChannelKryoRegistrationId] =
     Map(
