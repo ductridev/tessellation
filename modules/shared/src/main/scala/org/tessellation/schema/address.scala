@@ -60,7 +60,7 @@ object address {
       Validate.fromPredicate(
         {
           case a if a == StardustCollective.address => true
-          case a if a.length != 40                  => false
+          case a if a.length != 41                  => false
           case a =>
             val par = a.substring(5).filter(Character.isDigit).map(_.toString.toInt).sum % 9
 
