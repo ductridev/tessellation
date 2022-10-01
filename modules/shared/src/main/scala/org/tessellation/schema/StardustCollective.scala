@@ -1,5 +1,6 @@
 package org.tessellation.schema
 
 object StardustCollective {
-  final val address: String = "DAGSTARDUSTCOLLECTIVEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"
+  final val address: String = "WERXSTARDUSTCOLLECTIVEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"
+  
 }
