@@ -1,8 +1,8 @@
 package org.tessellation.sdk.infrastructure.gossip
 
 import cats.data.Ior
-import cats.effect.std.{Queue, Random}
-import cats.effect.{Async, Spawn}
+import cats.effect.Async
+import cats.effect.std.{Queue, Random, Supervisor}
 import cats.syntax.all._
 import cats.{Applicative, Parallel}
 
@@ -48,35 +48,37 @@ object GossipDaemon {
     generation: Generation,
     cfg: GossipDaemonConfig,
     collateral: Collateral[F]
-  ): GossipDaemon[F] = {
+  )(implicit S: Supervisor[F]): GossipDaemon[F] = {
     new GossipDaemon[F] {
       private val logger = Slf4jLogger.getLogger[F]
       private val rumorLogger = Slf4jLogger.getLoggerFromName[F](rumorLoggerName)
 
-      private val peerRoundRunner = GossipRoundRunner.make(clusterStorage, localHealthcheck, peerRound, "peer", cfg.peerRound)
-      private val commonRoundRunner = GossipRoundRunner.make(clusterStorage, localHealthcheck, commonRound, "common", cfg.commonRound)
-
       def startAsInitialValidator: F[Unit] =
-        peerRoundRunner.runForever >>
-          commonRoundRunner.runForever >>
+        runPeerRoundRunner >>
+          runCommonRoundRunner >>
           consumeRumors
 
       def startAsRegularValidator: F[Unit] =
-        Spawn[F].start {
+        S.supervise {
           clusterStorage.peerChanges.collectFirst {
             case Ior.Right(peer) if peer.state === NodeState.Ready   => peer
             case Ior.Both(_, peer) if peer.state === NodeState.Ready => peer
           }.compile.lastOrError.flatMap { peer =>
             initPeerRumorStorage(peer) >>
-              peerRoundRunner.runForever >>
+              runPeerRoundRunner >>
               initCommonRumorStorage(peer) >>
-              commonRoundRunner.runForever >>
+              runCommonRoundRunner >>
               consumeRumors
           }
         }.void
 
+      private def runPeerRoundRunner =
+        GossipRoundRunner.make(clusterStorage, localHealthcheck, peerRound, "peer", cfg.peerRound).flatMap(_.runForever)
+      private def runCommonRoundRunner =
+        GossipRoundRunner.make(clusterStorage, localHealthcheck, commonRound, "common", cfg.commonRound).flatMap(_.runForever)
+
       private def consumeRumors: F[Unit] =
-        Spawn[F].start {
+        S.supervise {
           Stream
             .fromQueueUnterminated(rumorQueue)
             .evalTap(logConsumption)
@@ -163,9 +165,9 @@ object GossipDaemon {
         }
 
       private def peerRound(peer: Peer): F[Unit] =
-        rumorStorage.getPeerRumorHeadCounters.flatMap { headCounters =>
+        rumorStorage.getLastOrdinals.flatMap { ordinals =>
           gossipClient
-            .queryPeerRumors(PeerRumorInquiryRequest(headCounters))
+            .queryPeerRumors(PeerRumorInquiryRequest(ordinals))
             .run(peer)
             .evalMap(_.toHashed)
             .enqueueUnterminated(rumorQueue)

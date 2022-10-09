@@ -58,17 +58,17 @@ object types {
     softStakeAddress: Address = Address("WERX77VVVRvdZiYxZ2hCtkHz68h85ApT5b2xzdTkn"),
     testnetAddress: Address = Address("WERX0qE5tkz6cMUD5M2dkqgfV4TQCzUUdAP5MFM9P"),
     startingOrdinal: EpochProgress = EpochProgress(0L),
-    testnetCount: NonNegLong = 217L,
+    testnetCount: NonNegLong = 75L,
     testnetWeight: NonNegLong = 4L,
-    softStakeCount: NonNegLong = 4789L,
+    softStakeCount: NonNegLong = 4702L,
     softStakeWeight: NonNegLong = 4L,
     facilitatorWeight: NonNegLong = 6L
   )
 
   case class DTMConfig(
     address: Address = Address("WERX0Njmo6JZ3FhkLsipJSppepUHPuTXcSifARfvK"),
-    dtmWeight: NonNegLong = 137L,
-    remainingWeight: NonNegLong = 863L
+    dtmWeight: NonNegLong = 156L,
+    remainingWeight: NonNegLong = 844L
   )
 
   case class StardustConfig(
