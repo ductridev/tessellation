@@ -19,7 +19,7 @@ import shapeless._
 import shapeless.syntax.singleton._
 
 final case class DagRoutes[F[_]: Async](dagService: DAGService[F], mkDagCell: L0Cell.Mk[F]) extends Http4sDsl[F] {
-  private[routes] val prefixPath = "/dag"
+  private[routes] val prefixPath = "/werx"
 
   private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
     case GET -> Root / AddressVar(address) / "balance" =>
