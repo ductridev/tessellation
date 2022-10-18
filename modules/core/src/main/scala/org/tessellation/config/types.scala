@@ -71,7 +71,7 @@ object types {
     remainingWeight: NonNegLong = 844L
   )
 
-  case class StardustConfig(
+  case class EstarConfig(
     addressPrimary: Address = Address("WERXESTARSOLUTIONSEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"),
     addressSecondary: Address = Address("WERX8VT7bxjs1XXBAzJGYJDaeyNxuThikHeUTp9XY"),
     primaryWeight: NonNegLong = 1L,
@@ -82,7 +82,7 @@ object types {
   case class RewardsConfig(
     softStaking: SoftStakingAndTestnetConfig = SoftStakingAndTestnetConfig(),
     dtm: DTMConfig = DTMConfig(),
-    stardust: StardustConfig = StardustConfig(),
+    stardust: EstarConfig = EstarConfig(),
     rewardsPerEpoch: SortedMap[EpochProgress, Amount] = SortedMap(
       EpochProgress(1296000L) -> Amount(658_43621389L),
       EpochProgress(2592000L) -> Amount(329_21810694L),

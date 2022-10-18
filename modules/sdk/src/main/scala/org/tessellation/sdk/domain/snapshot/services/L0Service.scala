@@ -1,4 +1,4 @@
-package org.tessellation.dag.l1.domain.snapshot.services
+package org.tessellation.sdk.domain.snapshot.services
 
 import cats.Applicative
 import cats.effect.Async
@@ -6,20 +6,22 @@ import cats.syntax.applicativeError._
 import cats.syntax.either._
 import cats.syntax.flatMap._
 import cats.syntax.functor._
+import cats.syntax.option._
 
-import org.tessellation.dag.l1.domain.snapshot.storage.LastGlobalSnapshotStorage
-import org.tessellation.dag.l1.http.p2p.clients.L0GlobalSnapshotClient
 import org.tessellation.dag.snapshot.{GlobalSnapshot, SnapshotOrdinal}
 import org.tessellation.ext.cats.syntax.next._
 import org.tessellation.kryo.KryoSerializer
 import org.tessellation.sdk.domain.cluster.storage.L0ClusterStorage
+import org.tessellation.sdk.domain.snapshot.storage.LastGlobalSnapshotStorage
+import org.tessellation.sdk.http.p2p.clients.L0GlobalSnapshotClient
 import org.tessellation.security.{Hashed, SecurityProvider}
 
-import eu.timepit.refined.types.numeric.NonNegLong
+import eu.timepit.refined.types.numeric.{NonNegLong, PosLong}
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 trait L0Service[F[_]] {
   def pullGlobalSnapshots: F[List[Hashed[GlobalSnapshot]]]
+  def pullGlobalSnapshot(ordinal: SnapshotOrdinal): F[Option[Hashed[GlobalSnapshot]]]
 }
 
 object L0Service {
@@ -27,11 +29,25 @@ object L0Service {
   def make[F[_]: Async: KryoSerializer: SecurityProvider](
     l0GlobalSnapshotClient: L0GlobalSnapshotClient[F],
     l0ClusterStorage: L0ClusterStorage[F],
-    lastSnapshotStorage: LastGlobalSnapshotStorage[F]
+    lastSnapshotStorage: LastGlobalSnapshotStorage[F],
+    singlePullLimit: Option[PosLong]
   ): L0Service[F] =
     new L0Service[F] {
 
       private val logger = Slf4jLogger.getLogger[F]
+
+      def pullGlobalSnapshot(ordinal: SnapshotOrdinal): F[Option[Hashed[GlobalSnapshot]]] =
+        l0ClusterStorage.getRandomPeer.flatMap { l0Peer =>
+          l0GlobalSnapshotClient
+            .get(ordinal)(l0Peer)
+            .flatMap(_.toHashedWithSignatureCheck)
+            .flatMap(_.liftTo[F])
+            .map(_.some)
+        }.handleErrorWith { e =>
+          logger
+            .warn(e)(s"Failure pulling single snapshot with ordinal=$ordinal")
+            .map(_ => none[Hashed[GlobalSnapshot]])
+        }
 
       def pullGlobalSnapshots: F[List[Hashed[GlobalSnapshot]]] = {
         for {
@@ -42,8 +58,10 @@ object L0Service {
             .run(l0Peer)
             .map { lastOrdinal =>
               val nextOrdinal = lastStoredOrdinal.map(_.next).getOrElse(lastOrdinal)
+              val lastOrdinalCap = lastOrdinal.value.value
+                .min(singlePullLimit.map(nextOrdinal.value.value + _.value).getOrElse(lastOrdinal.value.value))
 
-              nextOrdinal.value.value to lastOrdinal.value.value
+              nextOrdinal.value.value to lastOrdinalCap
             }
             .map(_.toList.map(o => SnapshotOrdinal(NonNegLong.unsafeFrom(o))))
             .flatMap { ordinals =>
