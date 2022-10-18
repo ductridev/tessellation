@@ -72,7 +72,7 @@ object types {
   )
 
   case class StardustConfig(
-    addressPrimary: Address = Address("WERXSTARDUSTCOLLECTIVEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"),
+    addressPrimary: Address = Address("WERXESTARSOLUTIONSEHZOIPHXZUBFGNXWJETZVSPAPAHMLXS"),
     addressSecondary: Address = Address("WERX8VT7bxjs1XXBAzJGYJDaeyNxuThikHeUTp9XY"),
     primaryWeight: NonNegLong = 1L,
     secondaryWeight: NonNegLong = 1L,
